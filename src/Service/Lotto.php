@@ -34,6 +34,14 @@ class Lotto extends BaseLotteryResultsSite
                     ->each(function (Crawler $number) {
                         return $number->text();
                     });
+
+                if (!$numbers) {
+                    $numbers = $crawler->filter('td:nth-child(4) span')
+                        ->each(function (Crawler $number) {
+                            return $number->text();
+                        });
+                }
+
                 return new Result($type, DateTime::createFromFormat('d-m-y', $date), join(',', $numbers));
             }
         );
