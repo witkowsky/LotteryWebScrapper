@@ -6,6 +6,11 @@ namespace App\Service;
 
 use App\Dto\Result;
 
+/**
+ * Class LotteriesResultsFinder
+ *
+ * @package App\Service
+ */
 class LotteriesResultsFinder implements LotteriesResultsFinderInterface
 {
     /**
@@ -13,6 +18,11 @@ class LotteriesResultsFinder implements LotteriesResultsFinderInterface
      */
     private $lotterySites;
 
+    /**
+     * LotteriesResultsFinder constructor.
+     *
+     * @param iterable $lotterySites
+     */
     public function __construct(iterable $lotterySites)
     {
         foreach ($lotterySites as $lotterySite) {

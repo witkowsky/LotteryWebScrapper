@@ -6,6 +6,11 @@ namespace App\Service;
 
 use App\Dto\Result;
 
+/**
+ * Interface LotteriesResultsFinderInterface
+ *
+ * @package App\Service
+ */
 interface LotteriesResultsFinderInterface
 {
     /**

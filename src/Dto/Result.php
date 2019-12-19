@@ -7,6 +7,11 @@ namespace App\Dto;
 use DateTime;
 use JsonSerializable;
 
+/**
+ * Class Result
+ *
+ * @package App\Dto
+ */
 class Result implements JsonSerializable
 {
     /**

@@ -6,34 +6,28 @@ namespace App\Service;
 
 use App\Dto\Result;
 use DateTime;
-use GuzzleHttp\ClientInterface;
+use Exception;
 use Symfony\Component\DomCrawler\Crawler;
 
-class Euromillions implements LotteryResultsSiteInterface
+/**
+ * Class Euromillions
+ *
+ * @package App\Service
+ */
+class Euromillions extends BaseLotteryResultsSite
 {
     private const URL = 'https://www.elgordo.com/results/euromillonariaen.asp';
     private const TYPE = 'Euromillions';
 
     /**
-     * @var ClientInterface
-     */
-    private $httpClient;
-
-    /**
-     * Lotto constructor.
-     * @param ClientInterface $httpClient
-     */
-    public function __construct(ClientInterface $httpClient)
-    {
-        $this->httpClient = $httpClient;
-    }
-
-    /**
+     * @param string $html
+     *
      * @return Result[]
+     *
+     * @throws Exception
      */
-    public function fetchResults(): array
+    protected function extractResults(string $html): array
     {
-        $html = $this->fetchSite();
         $crawler = new Crawler($html);
         $results = $crawler->filter('div.result_big div.body_game div.num span')->each(
             function (Crawler $number) {
@@ -64,9 +58,8 @@ class Euromillions implements LotteryResultsSiteInterface
     /**
      * @return string
      */
-    private function fetchSite(): string
+    protected function getWebsiteUrl(): string
     {
-        $response = $this->httpClient->request('GET', self::URL);
-        return (string) $response->getBody();
+        return self::URL;
     }
 }

@@ -5,34 +5,26 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Dto\Result;
-use GuzzleHttp\ClientInterface;
+use DateTime;
 use Symfony\Component\DomCrawler\Crawler;
 
-class Eurojackpot implements LotteryResultsSiteInterface
+/**
+ * Class Eurojackpot
+ *
+ * @package App\Service
+ */
+class Eurojackpot extends BaseLotteryResultsSite
 {
     private const URL = 'https://www.lotto.pl/eurojackpot/wyniki-i-wygrane';
     private const TYPE = 'Eurojackpot';
 
     /**
-     * @var ClientInterface
-     */
-    private $httpClient;
-
-    /**
-     * Lotto constructor.
-     * @param ClientInterface $httpClient
-     */
-    public function __construct(ClientInterface $httpClient)
-    {
-        $this->httpClient = $httpClient;
-    }
-
-    /**
+     * @param string $html
+     *
      * @return Result[]
      */
-    public function fetchResults(): array
+    protected function extractResults(string $html): array
     {
-        $html = $this->fetchSite();
         $crawler = new Crawler($html);
         return $crawler->filter('.wynik')->each(
             function (Crawler $wynik) {
@@ -44,7 +36,7 @@ class Eurojackpot implements LotteryResultsSiteInterface
                     });
                 return new Result(
                     self::TYPE,
-                    \DateTime::createFromFormat('d-m-y', $date),
+                    DateTime::createFromFormat('d-m-y', $date),
                     join(',', $numbers)
                 );
             }
@@ -54,9 +46,8 @@ class Eurojackpot implements LotteryResultsSiteInterface
     /**
      * @return string
      */
-    private function fetchSite(): string
+    protected function getWebsiteUrl(): string
     {
-        $response = $this->httpClient->request('GET', self::URL);
-        return (string) $response->getBody();
+        return self::URL;
     }
 }
