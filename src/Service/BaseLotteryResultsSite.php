@@ -7,7 +7,6 @@ namespace App\Service;
 use App\Dto\Result;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
-use Symfony\Component\DomCrawler\Crawler;
 
 /**
  * Class BaseLotteryResultsSite
